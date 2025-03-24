@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tryb konfiguracji</title>
+</head>
+<body>
+    <p>Tryb konfiguracji</p>
+    <select id="macSelect">
+        %s
+        <option value="-1" selected>Wpisz ręcznie</option>
+    </select>
+    <form action="/" method="post">
+        <label for="mac">Docelowy adres MAC: </label><input name="mac" id="mac" type="text" value="%02hhX:%02hhX:%02hhX:%02hhX:%02hhX:%02hhX"/>
+        <label for="baud">Baud rate UART: </label><input name="baud" id="baud" type="text" value="%u"/>
+        <input type="hidden" name="save" value="1"/>
+        <input type="submit" value="Zapisz"/>
+    </form>
+    <p>%s</p>
+
+    <script>
+        const macSelect = document.querySelector("#macSelect");
+        const mac = document.querySelector("#mac");
+        macSelect.addEventListener('change', () => {
+            if (macSelect.value != "-1") {
+                mac.value = macSelect.options[macSelect.selectedIndex].text;
+            }
+        });
+    </script>
+</body>
+</html>
