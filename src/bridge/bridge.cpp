@@ -1,6 +1,6 @@
 #include "bridge.h"
 
-HardwareSerial serial2(2);
+SoftwareSerial serial2(13, 15);
 
 void runBridge() {
     serial2.begin(espConfig->baudRate);
@@ -29,5 +29,6 @@ void bridgeLoop() {
         bytesToRead = MSG_SIZE;
     char messageBuffer[MSG_SIZE];
     serial2.readBytes(messageBuffer, bytesToRead);
+    // Serial.write(messageBuffer, bytesToRead);
     sendMessage((uint8_t*) messageBuffer, bytesToRead);
 }

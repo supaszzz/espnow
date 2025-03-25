@@ -41,6 +41,7 @@ void onData(uint8_t* macAddr, uint8_t* data, uint8_t len) {
     digitalWrite(5, HIGH);
     delay(1);
     serial2.write(data + SIG_LENGTH, len);
+    // Serial.write(data + SIG_LENGTH, len);
     digitalWrite(5, LOW);
 
     recvBytes += len;
