@@ -4,39 +4,50 @@ INCTXT(indexHtml, "src/setup/index.html");
 
 char macString[MACSTR_SIZE] = {0};
 
+const char* errors[] = {
+    "Zapisano",
+    "Niepoprawny adres MAC",
+    "Niepoprawny baud rate"
+};
+
 void addFoundMac(const char* macAddr) {
     size_t length = strlen(macString);
     snprintf(macString + length, MACSTR_SIZE - length, "<option>%s</option>", macAddr);
 }
 
+int updateConfig() {
+    EspConfig newConfig = *espConfig;
+
+    int scanRes = sscanf(server.arg("mac").c_str(), "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
+        &newConfig.targetMAC[0],
+        &newConfig.targetMAC[1],
+        &newConfig.targetMAC[2],
+        &newConfig.targetMAC[3],
+        &newConfig.targetMAC[4],
+        &newConfig.targetMAC[5]);
+    if (scanRes != 6)
+        return 1;
+
+    scanRes = sscanf(server.arg("baud").c_str(), "%u", &newConfig.baudRate);
+    if (scanRes != 1)
+        return 2;
+
+    memcpy(espConfig, &newConfig, sizeof(EspConfig));
+    saveConfig();
+    return 0;
+}
+
 void sendConfigPage() {
     char response[RES_SIZE];
-    char errMessage[32] = {0};
+    char message[32] = {0};
+    char messageClass[8] = {0};
 
     if (server.hasArg("save") && server.arg("save") == "1") {
-        try {
-            EspConfig newConfig = *espConfig;
-
-            int scanRes = sscanf(server.arg("mac").c_str(), "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
-                &newConfig.targetMAC[0],
-                &newConfig.targetMAC[1],
-                &newConfig.targetMAC[2],
-                &newConfig.targetMAC[3],
-                &newConfig.targetMAC[4],
-                &newConfig.targetMAC[5]);
-            if (scanRes != 6)
-                throw 1;
-
-            scanRes = sscanf(server.arg("baud").c_str(), "%u", &newConfig.baudRate);
-            if (scanRes != 1)
-                throw 2;
-
-            memcpy(espConfig, &newConfig, sizeof(EspConfig));
-            strcpy(errMessage, "Zapisano");
-            saveConfig();
-        } catch (int err) {
-            strcpy(errMessage, "Niepoprawne dane");
+        int configErr = updateConfig();
+        if (configErr) {
+            strcpy(messageClass, "error");
         }
+        strcpy(message, errors[configErr]);
     }
 
     snprintf(response, RES_SIZE, (char*)gindexHtmlData,
@@ -48,6 +59,7 @@ void sendConfigPage() {
         espConfig->targetMAC[4],
         espConfig->targetMAC[5],
         espConfig->baudRate,
-        errMessage);
+        messageClass,
+        message);
     server.send(200, "text/html", response);
 }
