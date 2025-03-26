@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfiguracja urządzenia</title>
+    <style>
+        
+    </style>
+    <script>
+        
+    </script>
+</head>
+<body>
+    <div class="config">
+        <h1>Konfiguracja</h1>
+        <form action="/" method="post">
+            <div class="fields">
+                <div>
+                    <label for="mac">Docelowy adres MAC: </label>
+                    <select id="selMac">
+                        %s
+                        <option selected>Wpisz ręcznie</option>
+                    </select>
+                </div>
+                <div><label></label><input name="mac" id="mac" type="text" value="%02hhX:%02hhX:%02hhX:%02hhX:%02hhX:%02hhX"/></div>
+                <div><label for="baud">Baud rate: </label><input name="baud" id="baud" type="text" value="%u"/></div>
+                <div>
+                    <label for="parity">Bit parzystości: </label>
+                    <select name="parity" id="parity" value="%03o">
+                        <option value="000">Brak</option>
+                        <option value="020">Parzysty</option>
+                        <option value="030">Nieparzysty</option>
+                        <option value="040">Zawsze 1</option>
+                        <option value="070">Zawsze 0</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="stop">Bity stopu: </label>
+                    <select name="stop" id="stop" value="%04o">
+                        <option value="0000">1</option>
+                        <option value="0200">2</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="data">Bity danych: </label>
+                    <select name="data" id="data" value="%03o">
+                        <option value="000">5</option>
+                        <option value="001">6</option>
+                        <option value="002">7</option>
+                        <option value="003">8</option>
+                    </select>
+                </div>
+            </div>
+            <input type="hidden" name="save" value="1"/>
+            <button type="submit">Zapisz</button>
+        </form>
+        <p class="%s">%s</p>
+    </div>
+</body>
+</html>

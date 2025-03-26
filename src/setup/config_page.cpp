@@ -7,7 +7,8 @@ char macString[MACSTR_SIZE] = {0};
 const char* errors[] = {
     "Zapisano",
     "Niepoprawny adres MAC",
-    "Niepoprawny baud rate"
+    "Niepoprawny baud rate",
+    "Niepoprawna konfiguracja UART"
 };
 
 void addFoundMac(const char* macAddr) {
@@ -31,6 +32,18 @@ int updateConfig() {
     scanRes = sscanf(server.arg("baud").c_str(), "%u", &newConfig.baudRate);
     if (scanRes != 1)
         return 2;
+
+    scanRes = sscanf(server.arg("parity").c_str(), "%ho", &newConfig.parity);
+    if (scanRes != 1)
+        return 3;
+
+    scanRes = sscanf(server.arg("stop").c_str(), "%ho", &newConfig.stopBits);
+    if (scanRes != 1)
+        return 3;
+    
+    scanRes = sscanf(server.arg("data").c_str(), "%ho", &newConfig.dataBits);
+    if (scanRes != 1)
+        return 3;
 
     memcpy(espConfig, &newConfig, sizeof(EspConfig));
     saveConfig();
@@ -59,6 +72,9 @@ void sendConfigPage() {
         espConfig->targetMAC[4],
         espConfig->targetMAC[5],
         espConfig->baudRate,
+        espConfig->parity,
+        espConfig->stopBits,
+        espConfig->dataBits,
         messageClass,
         message);
     server.send(200, "text/html", response);

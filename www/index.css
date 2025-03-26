@@ -1,0 +1,52 @@
+* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+body {
+    margin: 0;
+    background-color: #aaa;
+}
+.config {
+    background-color: white;
+    width: max-content;
+    min-width: 8cm;
+    margin: 2cm auto;
+    border: 1px solid grey;
+    box-shadow: black 0px 0px 3px;
+}
+h1 {
+    margin: 0;
+    text-align: center;
+    padding: 5mm;
+    color: white;
+    background-color: #444;
+    font-size: 24px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.fields {
+    display: table;
+    margin: 5mm 2mm;
+}
+.fields>div {
+    display: table-row;
+}
+label, input, select {
+    margin: 1mm;
+    display: table-cell;
+    min-width: 15em;
+}
+button {
+    margin-bottom: 5mm;
+}
+p {
+    margin-top: 0;
+    text-align: center;
+    color: darkgreen;
+}
+.error {
+    color: darkred;
+}

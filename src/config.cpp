@@ -4,9 +4,12 @@ EspConfig *espConfig = nullptr;
 
 EspConfig defaultConfig = {
     .signature = {'e', 's', 'p', 'N'},
-    .version = 1,
+    .version = 2,
     .targetMAC = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
-    .baudRate = 9600
+    .baudRate = 9600,
+    .parity = 000,
+    .stopBits = 000,
+    .dataBits = 003
 };
 
 void loadConfig() {

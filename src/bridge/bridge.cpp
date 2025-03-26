@@ -3,7 +3,7 @@
 SoftwareSerial serial2(13, 15);
 
 void runBridge() {
-    serial2.begin(espConfig->baudRate);
+    serial2.begin(espConfig->baudRate, static_cast<EspSoftwareSerial::Config>(espConfig->dataBits | espConfig->parity | espConfig->stopBits));
     if (!initESPNow(false)) {
         Serial.println("Nie udalo sie uruchomic ESP-NOW");
         displayMessage("Nie udalo sie uruchomic ESP-NOW");
