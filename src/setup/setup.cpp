@@ -1,7 +1,7 @@
 #include "setup.h"
 
 ESP8266WebServer server(80);
-
+bool fastPair = false;
 uint pairingTimeout = 11;
 
 void runAP() {
@@ -32,18 +32,32 @@ void runAP() {
 void runSetup() {
     pinMode(2, OUTPUT);
     digitalWrite(2, LOW);
+    for (int i = 0; i != 20; i++) {
+        delay(100);
+        if (digitalRead(4) == HIGH) {
+            fastPair = true;
+            break;
+        }
+    }
     displayMessage("Tryb konfiguracji\r\n\r\nSzukanie urzadzen...");
     initESPNow(true);
 }
 
+void onPaired() {
+    digitalWrite(2, HIGH);
+    esp_now_deinit();
+    setupMode = false;
+    runBridge();
+}
+
 void setupLoop() {
-    if (pairingTimeout) {
+    if (fastPair || pairingTimeout) {
         sendMessage(nullptr, 0);
-        pairingTimeout--;
-        if (pairingTimeout)
+        if (--pairingTimeout) {
             delay(500);
-        else
+        } else if (!fastPair) {
             runAP();
+        }
         return;
     }
 

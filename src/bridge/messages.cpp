@@ -32,7 +32,12 @@ void onData(uint8_t* macAddr, uint8_t* data, uint8_t len) {
         return;
     
     if (setupMode) {
-        foundMac(macAddr);
+        if (fastPair) {
+            memcpy(espConfig->targetMAC, macAddr, 6);
+            onPaired();
+        } else {
+            foundMac(macAddr);
+        }
         return;
     }
 
