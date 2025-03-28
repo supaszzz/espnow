@@ -17,16 +17,19 @@ unsigned long lostBytes = 0;
 unsigned long sentBytes = 0;
 unsigned long recvBytes = 0;
 
+unsigned long lastSent = 0;
+
 void onSent(uint8_t* macAddr, uint8_t sendStatus) {
     if (restartAfterSent)
         ESP.restart();
 
-    sentPackets++;
+    if (messageSize) sentPackets++;
     if (sendStatus) {
-        lostPackets++;
+        if (messageSize) lostPackets++;
         lostBytes += messageSize;
     } else {
         sentBytes += messageSize;
+        lastSent = millis();
     }
     messagePending = false;
     statsUpdated = true;

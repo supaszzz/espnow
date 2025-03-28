@@ -19,12 +19,22 @@ void bridgeLoop() {
         statsUpdated = false;
         updateStatDisplay();
     }
+
     if (messagePending)
         return;
 
     uint bytesToRead = serial2.available();
-    if (!bytesToRead)
+    if (!bytesToRead) {
+        auto time = millis() - lastSent;
+        if (!lastSent || time >= 4900)
+            sendMessage(nullptr, 0);
+        if (!lastSent || time >= 5000)
+            digitalWrite(2, HIGH);
+        else
+            digitalWrite(2, LOW);
+
         return;
+    }
     if (bytesToRead > MSG_SIZE)
         bytesToRead = MSG_SIZE;
     char messageBuffer[MSG_SIZE];

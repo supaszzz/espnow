@@ -24,6 +24,8 @@ extern unsigned long lostBytes;
 extern unsigned long sentBytes;
 extern unsigned long recvBytes;
 
+extern unsigned long lastSent;
+
 extern bool messagePending;
 
 void sendMessage(uint8_t* msg, size_t len);

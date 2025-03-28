@@ -30,7 +30,6 @@ void runAP() {
 }
 
 void runSetup() {
-    pinMode(2, OUTPUT);
     digitalWrite(2, LOW);
     for (int i = 0; i != 20; i++) {
         delay(100);

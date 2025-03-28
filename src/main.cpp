@@ -11,6 +11,7 @@ void setup() {
         Serial.println("Polaczono wyswietlacz");
     }
 
+    pinMode(2, OUTPUT);
     pinMode(4, INPUT_PULLUP);
     if (digitalRead(4) == LOW || !memcmp(espConfig->targetMAC, (const char[]){0,0,0,0,0,0}, 6))
         setupMode = true;
