@@ -3,6 +3,7 @@
 INCTXT(indexHtml, "src/setup/index.html");
 
 char macString[MACSTR_SIZE] = {0};
+char response[RES_SIZE];
 
 const char* errors[] = {
     "Zapisano",
@@ -51,7 +52,6 @@ int updateConfig() {
 }
 
 void sendConfigPage() {
-    char response[RES_SIZE];
     char message[32] = {0};
     char messageClass[8] = {0};
 
@@ -78,4 +78,6 @@ void sendConfigPage() {
         messageClass,
         message);
     server.send(200, "text/html", response);
+
+    Serial.println(response);
 }

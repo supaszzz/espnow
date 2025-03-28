@@ -10,7 +10,6 @@
 
 void runSetup();
 void setupLoop();
-void onPaired();
 
 extern ESP8266WebServer server;
 extern bool fastPair;

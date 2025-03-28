@@ -43,13 +43,6 @@ void runSetup() {
     initESPNow(true);
 }
 
-void onPaired() {
-    digitalWrite(2, HIGH);
-    esp_now_deinit();
-    setupMode = false;
-    runBridge();
-}
-
 void setupLoop() {
     if (fastPair || pairingTimeout) {
         sendMessage(nullptr, 0);

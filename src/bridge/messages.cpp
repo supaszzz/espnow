@@ -5,6 +5,8 @@ bool isBroadcasting = false;
 
 bool statsUpdated = true;
 
+bool restartAfterSent = false;
+
 bool messagePending = false;
 int messageSize = 0;
 
@@ -16,6 +18,9 @@ unsigned long sentBytes = 0;
 unsigned long recvBytes = 0;
 
 void onSent(uint8_t* macAddr, uint8_t sendStatus) {
+    if (restartAfterSent)
+        ESP.restart();
+
     sentPackets++;
     if (sendStatus) {
         lostPackets++;
@@ -34,7 +39,10 @@ void onData(uint8_t* macAddr, uint8_t* data, uint8_t len) {
     if (setupMode) {
         if (fastPair) {
             memcpy(espConfig->targetMAC, macAddr, 6);
-            onPaired();
+            saveConfig();
+            sendMessage(nullptr, 0);
+            digitalWrite(2, HIGH);
+            restartAfterSent = true;
         } else {
             foundMac(macAddr);
         }
