@@ -18,6 +18,7 @@ unsigned long sentBytes = 0;
 unsigned long recvBytes = 0;
 
 unsigned long lastSent = 0;
+unsigned long lastTried = 0;
 
 void onSent(uint8_t* macAddr, uint8_t sendStatus) {
     if (restartAfterSent)
@@ -70,6 +71,7 @@ void sendMessage(uint8_t* msg, size_t len) {
     esp_now_send(isBroadcasting? broadcastAddr : espConfig->targetMAC, packet, len + SIG_LENGTH);
     messagePending = true;
     messageSize = len;
+    lastTried = millis();
 }
 
 bool initESPNow(bool broadcast) {

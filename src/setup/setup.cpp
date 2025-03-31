@@ -17,9 +17,16 @@ void runAP() {
     server.on("/", sendConfigPage);
 
     server.on("/reset", []() {
-        server.send(200, "text/html", "Ponowne uruchamianie urządzenia i reset do ustawień domyślnych");
+        server.send(200, "text/html", "Ponowne uruchamianie urzadzenia i reset do ustawien domyslnych");
+        delay(100);
         espConfig->signature[0] = 0;
         saveConfig();
+        ESP.restart();
+    });
+
+    server.on("/restart", []() {
+        server.send(200, "text/html", "Ponowne uruchamianie urzadzenia");
+        delay(100);
         ESP.restart();
     });
 

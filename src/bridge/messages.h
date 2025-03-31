@@ -25,6 +25,7 @@ extern unsigned long sentBytes;
 extern unsigned long recvBytes;
 
 extern unsigned long lastSent;
+extern unsigned long lastTried;
 
 extern bool messagePending;
 

@@ -25,10 +25,10 @@ void bridgeLoop() {
 
     uint bytesToRead = serial2.available();
     if (!bytesToRead) {
-        auto time = millis() - lastSent;
-        if (!lastSent || time >= 4900)
+        auto time = millis();
+        if (!lastTried || time - lastTried >= 4000)
             sendMessage(nullptr, 0);
-        if (!lastSent || time >= 5000)
+        if (!lastSent || time - lastSent >= 5000)
             digitalWrite(2, HIGH);
         else
             digitalWrite(2, LOW);
