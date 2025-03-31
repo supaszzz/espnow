@@ -16,9 +16,6 @@ void setup() {
     if (digitalRead(4) == LOW || !memcmp(espConfig->targetMAC, (const char[]){0,0,0,0,0,0}, 6))
         setupMode = true;
 
-    // espConfig->signature[0] = 2;
-    // saveConfig();
-
     if (setupMode) {
         runSetup();
         return;

@@ -16,6 +16,13 @@ void runAP() {
 
     server.on("/", sendConfigPage);
 
+    server.on("/reset", []() {
+        server.send(200, "text/html", "Ponowne uruchamianie urządzenia i reset do ustawień domyślnych");
+        espConfig->signature[0] = 0;
+        saveConfig();
+        ESP.restart();
+    });
+
     server.onNotFound([]() {
         server.send(404, "text/plain", "Nie odnaleziono podanego adresu");
     });
